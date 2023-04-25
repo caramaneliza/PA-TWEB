@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +34,8 @@ namespace eTickets
         {
 
             //DbContext configuration
-             services.AddDbContext<AppDbContext>(options => new MySqlConnection(Configuration.GetConnectionString("DefaultConnectionString")));
-            //services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("MySqlConnection")));
+             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+            //services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString")));
 
             //Services configuration
             services.AddScoped<IActorsService, ActorsService>();

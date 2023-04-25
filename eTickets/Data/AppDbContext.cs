@@ -1,12 +1,6 @@
 ﻿using eTickets.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace eTickets.Data
 {
@@ -19,14 +13,14 @@ namespace eTickets.Data
         {
 
         }
-        
+
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-        //   // optionsBuilder.UseMySql(Configuration.GetConnectionString("MyConnectionString"));
+        //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MyConnectionString"));
         //}
 
-    
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Actor_Movie>().HasKey(am => new
@@ -38,10 +32,13 @@ namespace eTickets.Data
             modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Movie).WithMany(am => am.Actors_Movies).HasForeignKey(m => m.MovieId);
             modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Actor).WithMany(am => am.Actors_Movies).HasForeignKey(m => m.ActorId);
 
+            modelBuilder.Entity<IdentityRole>();
 
             base.OnModelCreating(modelBuilder);
         }
-        
+
+        //public DbSet<IdentityRole> Roles { get; set; }
+
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor_Movie> Actors_Movies { get; set; }
