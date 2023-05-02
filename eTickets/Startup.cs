@@ -18,13 +18,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace eTickets
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            //Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +36,8 @@ namespace eTickets
         {
 
             //DbContext configuration
-             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+            services.AddMvc();
             //services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString")));
 
             //Services configuration
@@ -57,11 +60,18 @@ namespace eTickets
             });
 
             services.AddControllersWithViews();
+            services.AddControllers()
+           .AddControllersAsServices();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -95,6 +105,9 @@ namespace eTickets
             //Seed database
             AppDbInitializer.Seed(app);
             AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
+            serviceProvider.GetService<AppDbContext>().Database.EnsureCreated();
+
         }
+
     }
 }

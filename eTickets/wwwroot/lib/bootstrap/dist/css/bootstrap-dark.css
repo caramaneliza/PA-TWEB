@@ -1,0 +1,43 @@
+﻿/* Override default Bootstrap colors */
+:root {
+    --primary: #35858B;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #072227;
+}
+
+
+/* Add more styles as needed */
+
+
+[data-theme="dark"] body {
+    background-color: var(--dark) !important;
+}
+
+[data-theme="dark"] .bg-black {
+    background-color: var(--dark) !important;
+}
+
+[data-theme="dark"] .bg-dark {
+    background-color: var(--dark) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--dark) !important;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: var(--dark) !important;
+}
+
+[data-theme="dark"] .navbar-brand {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .border-bottom {
+    border-bottom: var(--primary) !important;
+}
