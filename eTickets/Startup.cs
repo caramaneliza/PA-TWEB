@@ -62,9 +62,7 @@ namespace eTickets
             services.AddControllersWithViews();
             services.AddControllers()
            .AddControllersAsServices();
-            services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+            
 
 
 
