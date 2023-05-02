@@ -25,12 +25,12 @@ namespace eTickets.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Users()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            return View(users);
+        }
 
-        //public async Task<IActionResult> Users()
-        //{
-        //    var users = await _context.Users.ToListAsync();
-        //    return View(users);
-        //}
 
 
         public IActionResult Login() => View(new LoginVM());
@@ -61,33 +61,45 @@ namespace eTickets.Controllers
         }
 
 
-        public IActionResult Register() => View(new RegisterVM());
+        public IActionResult Register()
+{
+    return View(new RegisterVM());
+}
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterVM registerVM)
-        {
-            if (!ModelState.IsValid) return View(registerVM);
+[HttpPost]
+public async Task<IActionResult> Register(RegisterVM registerVM)
+{
+    if (!ModelState.IsValid) 
+        return View(registerVM);
 
-            var user = await _userManager.FindByEmailAsync(registerVM.EmailAddress);
-            if(user != null)
-            {
-                TempData["Error"] = "This email address is already in use";
-                return View(registerVM);
-            }
+    var user = await _userManager.FindByEmailAsync(registerVM.EmailAddress);
+    if (user != null)
+    {
+        TempData["Error"] = "This email address is already in use";
+        return View(registerVM);
+    }
 
-            var newUser = new ApplicationUser()
-            {
-                FullName = registerVM.FullName,
-                Email = registerVM.EmailAddress,
-                UserName = registerVM.EmailAddress
-            };
-            var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
+    var newUser = new ApplicationUser
+    {
+        FullName = registerVM.FullName,
+        Email = registerVM.EmailAddress,
+        UserName = registerVM.EmailAddress
+    };
 
-            if (newUserResponse.Succeeded)
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+    var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
+    if (!newUserResponse.Succeeded) 
+        return View(registerVM);
 
-            return View("RegisterCompleted");
-        }
+    await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+
+    return RedirectToAction("RegisterCompleted");
+}
+
+public IActionResult RegisterCompleted()
+{
+    return View();
+}
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

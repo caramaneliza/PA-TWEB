@@ -25,8 +25,7 @@ namespace eTickets
     {
         public Startup(IConfiguration configuration)
         {
-            //Configuration = configuration;
-
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -36,7 +35,10 @@ namespace eTickets
         {
 
             //DbContext configuration
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+            var connectionString = Configuration.GetConnectionString("SqlConnectionString");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+
             services.AddMvc();
             //services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString")));
 
@@ -51,7 +53,6 @@ namespace eTickets
             services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
             //Authentication and authorization
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddMemoryCache();
             services.AddSession();
             services.AddAuthentication(options =>
@@ -62,9 +63,9 @@ namespace eTickets
             services.AddControllersWithViews();
             services.AddControllers()
            .AddControllersAsServices();
-            
-
-
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         }
 
