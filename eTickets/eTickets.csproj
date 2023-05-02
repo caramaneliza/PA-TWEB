@@ -1,9 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>f6e0ecf7-d68a-40e4-8a0c-a85886da1f9e</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\darkmode\**" />
+    <Content Remove="wwwroot\darkmode\**" />
+    <EmbeddedResource Remove="wwwroot\darkmode\**" />
+    <None Remove="wwwroot\darkmode\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7" />
@@ -15,6 +22,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.2.2" />
     <PackageReference Include="MySql.Data" Version="8.0.33" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
   </ItemGroup>
