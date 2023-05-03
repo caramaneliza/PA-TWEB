@@ -62,15 +62,19 @@ namespace eTickets
 
             services.AddControllersWithViews();
             services.AddControllers()
-           .AddControllersAsServices();
-            services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+                    .AddControllersAsServices();
 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env, 
+            IServiceProvider serviceProvider
+        )
         {
             if (env.IsDevelopment())
             {
@@ -105,8 +109,6 @@ namespace eTickets
             AppDbInitializer.Seed(app);
             AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
             serviceProvider.GetService<AppDbContext>().Database.EnsureCreated();
-
         }
-
     }
 }
